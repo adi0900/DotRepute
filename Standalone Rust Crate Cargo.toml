@@ -1,0 +1,65 @@
+package]
+name = "dotrepute-core"
+version = "0.1.0"
+edition = "2021"
+authors = ["NorhamAi Team"]
+license = "MIT OR Apache-2.0"
+description = "Core reputation scoring and data processing utilities for decentralized identity systems"
+repository = "https://github.com/norhamai/dotrepute-core"
+keywords = ["reputation", "polkadot", "blockchain", "wasm", "scoring"]
+categories = ["cryptography", "wasm", "no-std"]
+readme = "README.md"
+
+[lib]
+name = "dotrepute_core"
+path = "lib.rs"
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+# Serialization
+serde = { version = "1.0", default-features = false, features = ["derive", "alloc"] }
+serde_json = { version = "1.0", default-features = false, optional = true, features = ["alloc"] }
+bincode = { version = "1.3", default-features = false, optional = true }
+
+# Encoding
+scale = { package = "parity-scale-codec", version = "3.0", default-features = false, features = ["derive"] }
+scale-info = { version = "2.0", default-features = false, features = ["derive"], optional = true }
+
+# WASM bindings
+wasm-bindgen = { version = "0.2", optional = true }
+wasm-bindgen-test = { version = "0.3", optional = true }
+
+# Substrate/Polkadot (optional)
+sp-core = { version = "21.0", default-features = false, optional = true }
+sp-runtime = { version = "24.0", default-features = false, optional = true }
+
+[dev-dependencies]
+serde_json = "1.0"
+
+[features]
+default = ["std"]
+std = [
+    "serde/std",
+    "serde_json",
+    "scale/std",
+    "scale-info/std",
+    "sp-core/std",
+    "sp-runtime/std",
+]
+wasm = ["wasm-bindgen", "wasm-bindgen-test"]
+substrate = ["sp-core", "sp-runtime", "scale-info"]
+full = ["std", "wasm", "substrate", "bincode"]
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+panic = "abort"
+
+[profile.release.package."*"]
+opt-level = 3
+
+[[example]]
+name = "basic_usage"
+path = "examples/basic_usage.rs"
+required-features = ["std"]
