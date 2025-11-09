@@ -1,0 +1,81 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 0%;
+    --foreground: 0 0% 100%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 100%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 45 93% 47%;
+    --primary-foreground: 0 0% 0%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 64%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 0 0% 100%;
+    --destructive: 0 63% 31%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 0 0% 15%;
+    --input: 0 0% 15%;
+    --ring: 45 93% 47%;
+    --radius: 0.75rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(251, 191, 36, 0.3);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(251, 191, 36, 0.5);
+}
+
+/* Smooth scroll */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Premium Text Glow Animations for Badge */
+@keyframes text-glow-light {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(251, 146, 60, 0), 0 0 20px rgba(252, 211, 77, 0);
+  }
+  50% {
+    text-shadow: 0 0 10px rgba(251, 146, 60, 0.4), 0 0 20px rgba(252, 211, 77, 0.2), 0 0 30px rgba(254, 240, 138, 0.1);
+  }
+}
+
+@keyframes text-glow-dark {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(251, 146, 60, 0), 0 0 20px rgba(252, 211, 77, 0);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(251, 146, 60, 0.6), 0 0 30px rgba(252, 211, 77, 0.4), 0 0 45px rgba(254, 240, 138, 0.2);
+  }
+}
