@@ -1,0 +1,20 @@
+<svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background box matching Venture style -->
+  <rect x="1" y="1" width="30" height="30" fill="black" stroke="white" stroke-width="1.5" stroke-opacity="0.2"/>
+
+  <!-- "D." text in Venture style -->
+  <text x="16" y="22" font-family="system-ui, -apple-system, sans-serif" font-size="16" font-weight="700" fill="white" text-anchor="middle" letter-spacing="-0.5">D.</text>
+
+  <!-- Small decorative corners -->
+  <line x1="4" y1="4" x2="7" y2="4" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+  <line x1="4" y1="4" x2="4" y2="7" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+
+  <line x1="25" y1="4" x2="28" y2="4" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+  <line x1="28" y1="4" x2="28" y2="7" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+
+  <line x1="4" y1="25" x2="7" y2="25" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+  <line x1="4" y1="25" x2="4" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+
+  <line x1="25" y1="28" x2="28" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+  <line x1="28" y1="25" x2="28" y2="28" stroke="white" stroke-width="1" stroke-opacity="0.3"/>
+</svg>
