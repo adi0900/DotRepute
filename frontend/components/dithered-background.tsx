@@ -66,6 +66,7 @@ export function DitheredBackground() {
       }
 
       draw(time: number) {
+        if (!ctx) return;
         this.dots.forEach(dot => dot.draw(ctx, time, this.waveOffset, width, height));
       }
     }

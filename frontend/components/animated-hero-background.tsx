@@ -35,6 +35,9 @@ export function AnimatedHeroBackground() {
     window.addEventListener('resize', setCanvasSize);
 
     // Particle system for animated dots
+    const canvasWidth = canvas.width;
+    const canvasHeight = canvas.height;
+
     class Particle {
       x: number;
       y: number;
@@ -45,8 +48,8 @@ export function AnimatedHeroBackground() {
       hue: number;
 
       constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
+        this.x = Math.random() * canvasWidth;
+        this.y = Math.random() * canvasHeight;
         this.size = Math.random() * 2 + 0.5;
         this.speedX = Math.random() * 0.5 - 0.25;
         this.speedY = Math.random() * 0.5 - 0.25;
@@ -59,10 +62,10 @@ export function AnimatedHeroBackground() {
         this.y += this.speedY;
 
         // Wrap around edges
-        if (this.x > canvas.width) this.x = 0;
-        if (this.x < 0) this.x = canvas.width;
-        if (this.y > canvas.height) this.y = 0;
-        if (this.y < 0) this.y = canvas.height;
+        if (this.x > canvasWidth) this.x = 0;
+        if (this.x < 0) this.x = canvasWidth;
+        if (this.y > canvasHeight) this.y = 0;
+        if (this.y < 0) this.y = canvasHeight;
 
         // Pulse opacity
         this.opacity += Math.sin(Date.now() * 0.001) * 0.001;
@@ -116,8 +119,8 @@ export function AnimatedHeroBackground() {
 
         // Set new random target occasionally
         if (Math.random() < 0.01) {
-          this.targetX = Math.random() * canvas.width;
-          this.targetY = Math.random() * canvas.height;
+          this.targetX = Math.random() * canvasWidth;
+          this.targetY = Math.random() * canvasHeight;
         }
       }
 
@@ -146,20 +149,20 @@ export function AnimatedHeroBackground() {
 
     const orbs = [
       new GradientOrb(
-        canvas.width * 0.7,
-        canvas.height * 0.3,
+        canvasWidth * 0.7,
+        canvasHeight * 0.3,
         400,
         'rgba(251, 191, 36, 0.15)' // Yellow
       ),
       new GradientOrb(
-        canvas.width * 0.3,
-        canvas.height * 0.6,
+        canvasWidth * 0.3,
+        canvasHeight * 0.6,
         350,
         'rgba(249, 115, 22, 0.12)' // Orange
       ),
       new GradientOrb(
-        canvas.width * 0.8,
-        canvas.height * 0.7,
+        canvasWidth * 0.8,
+        canvasHeight * 0.7,
         300,
         'rgba(239, 68, 68, 0.08)' // Red
       )
@@ -169,7 +172,7 @@ export function AnimatedHeroBackground() {
     let noiseOffset = 0;
     function drawNoise() {
       if (!ctx) return;
-      const imageData = ctx.createImageData(canvas.width, canvas.height);
+      const imageData = ctx.createImageData(canvasWidth, canvasHeight);
       const data = imageData.data;
 
       for (let i = 0; i < data.length; i += 4) {
@@ -189,7 +192,7 @@ export function AnimatedHeroBackground() {
 
       // Clear canvas
       ctx.fillStyle = 'rgba(0, 0, 0, 1)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
       // Draw and update gradient orbs
       orbs.forEach(orb => {
@@ -228,17 +231,17 @@ export function AnimatedHeroBackground() {
 
       // Vignette effect
       const gradient = ctx.createRadialGradient(
-        canvas.width / 2,
-        canvas.height / 2,
+        canvasWidth / 2,
+        canvasHeight / 2,
         0,
-        canvas.width / 2,
-        canvas.height / 2,
-        canvas.width / 1.5
+        canvasWidth / 2,
+        canvasHeight / 2,
+        canvasWidth / 1.5
       );
       gradient.addColorStop(0, 'rgba(0, 0, 0, 0)');
       gradient.addColorStop(1, 'rgba(0, 0, 0, 0.8)');
       ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      ctx.fillRect(0, 0, canvasWidth, canvasHeight);
 
       requestAnimationFrame(animate);
     }

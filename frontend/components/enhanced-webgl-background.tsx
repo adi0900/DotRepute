@@ -21,7 +21,8 @@ export function EnhancedWebGLBackground() {
     if (!ctx) return;
 
     let animationId: number;
-    let width: number, height: number;
+    let width: number = window.innerWidth;
+    let height: number = window.innerHeight;
 
     // Responsive canvas sizing with device pixel ratio
     const resize = () => {
@@ -36,9 +37,6 @@ export function EnhancedWebGLBackground() {
 
       ctx.scale(dpr, dpr);
     };
-
-    resize();
-    window.addEventListener('resize', resize);
 
     // Enhanced Dot Matrix System - Fumadocs inspired (optimized)
     class DotMatrix {
@@ -70,6 +68,7 @@ export function EnhancedWebGLBackground() {
       }
 
       draw() {
+        if (!ctx) return;
         this.dots.forEach(dot => dot.draw(ctx, width, height));
       }
     }
@@ -160,6 +159,7 @@ export function EnhancedWebGLBackground() {
       }
 
       draw() {
+        if (!ctx) return;
         const gradient = ctx.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.radius);
         // More vibrant orange gradient matching Fumadocs
         gradient.addColorStop(0, `hsla(${this.hue}, 100%, 60%, 0.25)`);
@@ -171,6 +171,10 @@ export function EnhancedWebGLBackground() {
         ctx.fillRect(this.x - this.radius, this.y - this.radius, this.radius * 2, this.radius * 2);
       }
     }
+
+    // Call resize to initialize width and height
+    resize();
+    window.addEventListener('resize', resize);
 
     // Initialize elements
     const dotMatrix = new DotMatrix();
