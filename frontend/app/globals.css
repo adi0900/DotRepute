@@ -1,40 +1,38 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
-@layer base {
-  :root {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 100%;
-    --card: 0 0% 5%;
-    --card-foreground: 0 0% 100%;
-    --popover: 0 0% 5%;
-    --popover-foreground: 0 0% 100%;
-    --primary: 45 93% 47%;
-    --primary-foreground: 0 0% 0%;
-    --secondary: 0 0% 15%;
-    --secondary-foreground: 0 0% 100%;
-    --muted: 0 0% 15%;
-    --muted-foreground: 0 0% 64%;
-    --accent: 0 0% 15%;
-    --accent-foreground: 0 0% 100%;
-    --destructive: 0 63% 31%;
-    --destructive-foreground: 0 0% 100%;
-    --border: 0 0% 15%;
-    --input: 0 0% 15%;
-    --ring: 45 93% 47%;
-    --radius: 0.75rem;
-  }
+:root {
+  --background: 0 0% 0%;
+  --foreground: 0 0% 100%;
+  --card: 0 0% 5%;
+  --card-foreground: 0 0% 100%;
+  --popover: 0 0% 5%;
+  --popover-foreground: 0 0% 100%;
+  --primary: 45 93% 47%;
+  --primary-foreground: 0 0% 0%;
+  --secondary: 0 0% 15%;
+  --secondary-foreground: 0 0% 100%;
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 64%;
+  --accent: 0 0% 15%;
+  --accent-foreground: 0 0% 100%;
+  --destructive: 0 63% 31%;
+  --destructive-foreground: 0 0% 100%;
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 45 93% 47%;
+  --radius: 0.75rem;
 }
 
-@layer base {
-  * {
-    @apply border-border;
-  }
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
+* {
+  border-color: hsl(var(--border));
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-feature-settings:
+    "rlig" 1,
+    "calt" 1;
 }
 
 /* Custom scrollbar */
@@ -63,19 +61,70 @@ html {
 
 /* Premium Text Glow Animations for Badge */
 @keyframes text-glow-light {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(251, 146, 60, 0), 0 0 20px rgba(252, 211, 77, 0);
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px rgba(251, 146, 60, 0),
+      0 0 20px rgba(252, 211, 77, 0);
   }
   50% {
-    text-shadow: 0 0 10px rgba(251, 146, 60, 0.4), 0 0 20px rgba(252, 211, 77, 0.2), 0 0 30px rgba(254, 240, 138, 0.1);
+    text-shadow:
+      0 0 10px rgba(251, 146, 60, 0.4),
+      0 0 20px rgba(252, 211, 77, 0.2),
+      0 0 30px rgba(254, 240, 138, 0.1);
   }
 }
 
 @keyframes text-glow-dark {
-  0%, 100% {
-    text-shadow: 0 0 10px rgba(251, 146, 60, 0), 0 0 20px rgba(252, 211, 77, 0);
+  0%,
+  100% {
+    text-shadow:
+      0 0 10px rgba(251, 146, 60, 0),
+      0 0 20px rgba(252, 211, 77, 0);
   }
   50% {
-    text-shadow: 0 0 15px rgba(251, 146, 60, 0.6), 0 0 30px rgba(252, 211, 77, 0.4), 0 0 45px rgba(254, 240, 138, 0.2);
+    text-shadow:
+      0 0 15px rgba(251, 146, 60, 0.6),
+      0 0 30px rgba(252, 211, 77, 0.4),
+      0 0 45px rgba(254, 240, 138, 0.2);
   }
+}
+
+/* light mode */
+.luno\:border > button:nth-child(2) {
+  color: white !important;
+}
+.luno\:border > button {
+  border: 1px solid #000 !important;
+  height: 36px !important;
+}
+
+button.luno\:rounded-connectButton > div {
+  height: 36px !important;
+}
+
+.luno\:text-modalText.luno\:flex.luno\:items-stretch.luno\:gap-3.uppercase.luno\:border {
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
+}
+
+/* dark mode */
+.dark .luno\:border > button:nth-child(2) {
+  color: black !important;
+}
+.dark .luno\:border > button {
+  border: 1px solid #fff !important;
+  height: 36px !important;
+}
+
+.dark button.luno\:rounded-connectButton > div {
+  height: 36px !important;
+}
+
+.dark
+  .luno\:text-modalText.luno\:flex.luno\:items-stretch.luno\:gap-3.uppercase.luno\:border {
+  border-width: 0 !important;
+  border-style: none !important;
+  border-color: transparent !important;
 }
