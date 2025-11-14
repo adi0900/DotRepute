@@ -23,7 +23,9 @@ export const API_ROUTES = {
   adminWorkspaceById: "/admin/workspaces/:id",
   adminMemberships: "/admin/memberships",
   adminAuditLogs: "/admin/audit-logs",
-  adminAuditLogStats: "/admin/audit-logs/stats"
+  adminAuditLogStats: "/admin/audit-logs/stats",
+  // Subscan routes
+  subscanAccountReferenda: "/subscan/account/referenda"
 } as const;
 
 export type RouteName = keyof typeof API_ROUTES;
@@ -164,6 +166,12 @@ permissions.set(API_ROUTES.adminAuditLogStats, {
   permissions: { GET: "" },
   authenticated: true,
   super: true
+});
+
+// Subscan routes
+permissions.set(API_ROUTES.subscanAccountReferenda, {
+  permissions: { GET: "" },
+  authenticated: false
 });
 
 logger.info(permissions, "route permissions set");

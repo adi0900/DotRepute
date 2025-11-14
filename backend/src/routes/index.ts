@@ -21,6 +21,7 @@ import {
 } from "@/handlers/memberships/memberships.handlers.ts";
 import { getAccount, getAccounts, createAccount, updateAccount } from "@/handlers/accounts/accounts.handlers.ts";
 import { getCurrentUser } from "@/handlers/me/me.handlers.ts";
+import { getAccountReferenda } from "@/handlers/subscan/subscan.handlers.ts";
 
 const { API_ROUTES } = permissions;
 
@@ -59,4 +60,7 @@ export function routes(app: Application): void {
   app.post(API_ROUTES.workspaceMembers, isAuthenticated, checkAccountStatus, isAuthorized, addWorkspaceMember);
   app.put(API_ROUTES.workspaceMemberRole, isAuthenticated, checkAccountStatus, isAuthorized, updateMemberRole);
   app.delete(API_ROUTES.workspaceMemberRemove, isAuthenticated, checkAccountStatus, isAuthorized, removeMember);
+
+  // Reference routes
+  app.get(API_ROUTES.subscanAccountReferenda, getAccountReferenda);
 }

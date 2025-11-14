@@ -56,7 +56,8 @@ import {
   WorkspaceSchema,
   WorkspaceWithMembersDataSchema,
   WorkspacesListDataSchema,
-  WorkspacesWithPaginationDataSchema
+  WorkspacesWithPaginationDataSchema,
+  SubscanAccountSchemas,
 } from "./openapi-schemas.ts";
 
 const registry = new OpenAPIRegistry();
@@ -124,6 +125,9 @@ registry.register("AuditLogWithDetails", AuditLogWithDetailsSchema);
 registry.register("AuditLogsWithPaginationData", AuditLogsWithPaginationDataSchema);
 registry.register("MembershipWithDetails", MembershipWithDetailsSchema);
 registry.register("MembershipsWithPaginationData", MembershipsWithPaginationDataSchema);
+
+// Register referenced schemas collection
+registry.register("SubscanAccountSchemas", SubscanAccountSchemas);
 
 // Security scheme for JWT Bearer token
 registry.registerComponent("securitySchemes", "bearerAuth", {
@@ -918,6 +922,38 @@ registry.registerPath({
     }
   }
 });
+
+registry.registerPath({
+  method: "get",
+  path: "/subscan/account/referenda",
+  summary: "Get governance referenda by account",
+  description: "Returns the list of governance referenda associated with a specific account, retrieved from the Subscan API",
+  tags: ["Subscan"],
+  request: {
+    query: SubscanAccountSchemas
+  },
+  responses: {
+    200: {
+      description: "Fetched account referenda list successfully",
+      content: {
+        "application/json": {
+          schema: SuccessResponseSchema.extend({
+            data: SubscanAccountSchemas
+          })
+        }
+      }
+    },
+    400: {
+      description: "Failed to fetch account referenda list from Subscan",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema
+        }
+      }
+    }
+  }
+});
+
 
 export function generateOpenAPIDocument(): ReturnType<OpenApiGeneratorV3["generateDocument"]> {
   const generator = new OpenApiGeneratorV3(registry.definitions);

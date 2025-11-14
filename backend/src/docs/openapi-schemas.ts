@@ -388,3 +388,13 @@ export const MembershipsWithPaginationDataSchema = z
     pagination: PaginationSchema
   })
   .openapi("MembershipsWithPaginationData");
+
+// Subscan response schemas
+export const SubscanAccountSchemas = z
+  .object({
+    account: z.string().describe("Account identifier"),
+    module: z.enum(["democracy", "referendum"]).nullable().describe("Module filter"),
+    page: z.number().int().positive().describe("Page number"),
+    row: z.number().int().positive().describe("Data size per page")
+  })
+  .openapi("SubscanAccountSchemas");

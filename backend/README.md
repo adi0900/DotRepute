@@ -58,6 +58,10 @@ This template provides a robust foundation for building scalable APIs with:
 - `PUT /workspaces/:id/members/:memberId/role` - Update member role (Admin only)
 - `DELETE /workspaces/:id/members/:memberId` - Remove member (Admin only)
 
+#### Subscan Routes
+
+- `GET /subscan/account/referenda` -  Get governance referenda by account
+
 #### Admin Routes (SuperAdmin only)
 
 - `GET /admin/accounts` - List all accounts with pagination

@@ -33,5 +33,6 @@ export const config = {
   db_name: process.env.POSTGRES_DB || "postgres",
   supabaseUrl: process.env.SUPABASE_URL || "https://example.supabase.co",
   supabaseKey: process.env.SUPABASE_PK || "example-key",
-  jwtSecret: process.env.SUPABASE_AUTH_JWT_SECRET || "super-secret-key-that-should-be-replaced"
+  jwtSecret: process.env.SUPABASE_AUTH_JWT_SECRET || "super-secret-key-that-should-be-replaced",
+  subscanApiKey: process.env.SUBSCAN_API_KEY || "your-subscan-api-key"
 };
