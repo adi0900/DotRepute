@@ -57,6 +57,7 @@ body {
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
+  overflow: clip !important;
 }
 
 /* Premium Text Glow Animations for Badge */
@@ -111,10 +112,10 @@ button.luno\:rounded-connectButton > div {
 
 /* dark mode */
 .dark .luno\:border > button:nth-child(2) {
-  color: black !important;
+  color: white !important;
 }
 .dark .luno\:border > button {
-  border: 1px solid #fff !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
   height: 36px !important;
 }
 

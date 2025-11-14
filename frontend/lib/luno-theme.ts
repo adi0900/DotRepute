@@ -99,9 +99,9 @@ export const darkTheme: LunokitTheme = {
     infoForeground: "#000000",
 
     // Connect Button
-    connectButtonBackground: "#ffffff",
+    connectButtonBackground: "#000000",
     connectButtonInnerBackground: "#ffffff",
-    connectButtonText: "#000000",
+    connectButtonText: "#ffffff",
 
     // Wallet Select
     walletSelectItemBackground: "#000000",
