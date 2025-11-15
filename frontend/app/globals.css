@@ -57,7 +57,6 @@ body {
 /* Smooth scroll */
 html {
   scroll-behavior: smooth;
-  overflow: clip !important;
 }
 
 /* Premium Text Glow Animations for Badge */

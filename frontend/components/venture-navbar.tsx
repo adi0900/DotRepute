@@ -39,9 +39,12 @@ export function VentureNavbar({
   isLoggedIn = false,
   onLogout,
 }: VentureNavbarProps) {
+  const { isOpen } = useConnectModal();
   return (
     <nav
-      className={`fixed top-0 left-0 right-0 z-10 border-b transition-colors duration-300  ${
+      className={`fixed top-0 left-0 z-50 border-b transition-colors duration-300 ${
+        isOpen ? "right-[8px]" : "right-0"
+      } ${
         theme === "light"
           ? "bg-white border-black/10"
           : "bg-black border-white/5"
