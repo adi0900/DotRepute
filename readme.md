@@ -1,9 +1,3 @@
-Here is a **professional, submission-ready README.md** polished specifically for the Polkadot Hackathon, optimized for clarity, technical depth, and strong judging impact.
-
-You can copy-paste this directly into GitHub.
-
----
-
 # **DotRepute — A Polkadot-Native Contributor Reputation System (CRS)**
 
 ### *Bringing Web2 Reputation Infrastructure Into Web3*
