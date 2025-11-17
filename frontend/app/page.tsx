@@ -44,12 +44,27 @@ import { ParticleGlobe } from "@/components/particle-globe";
 import { PremiumWebGLLoader } from "@/components/premium-webgl-loader";
 import { VentureNavbar } from "@/components/venture-navbar";
 import { useLunoTheme } from "@luno-kit/ui";
+import { ENDPOINTS } from "@/constants/endpoints";
 
 export default function LandingPage() {
   const [theme, setTheme] = useState<"light" | "dark">("dark");
   const [mounted, setMounted] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const { themeMode, setThemeChoice } = useLunoTheme();
+  const [data, setData] = useState<any>(null);
+
+  const getData = async () => {
+    const res = await fetch("/api/subscan");
+    if (!res.ok) {
+      throw new Error(`HTTP ${res.status}`);
+    }
+    const json = await res.json();
+    setData(json.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   // Initialize theme from localStorage on mount
   useEffect(() => {
