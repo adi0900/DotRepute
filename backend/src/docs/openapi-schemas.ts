@@ -393,8 +393,16 @@ export const MembershipsWithPaginationDataSchema = z
 export const SubscanAccountSchemas = z
   .object({
     account: z.string().describe("Account identifier"),
-    module: z.enum(["democracy", "referendum"]).nullable().describe("Module filter"),
-    page: z.number().int().positive().describe("Page number"),
-    row: z.number().int().positive().describe("Data size per page")
+    module: z.enum(["democracy", "referendum"]).nullable().describe("Module filter").default("referendum"),
+    page: z.number().int().positive().describe("Page number").default(0),
+    row: z.number().int().positive().describe("Data size per page").default(10)
   })
   .openapi("SubscanAccountSchemas");
+
+export const SubscanStakingSchemas = z
+  .object({
+    address: z.string().describe("Staking address"),
+    page: z.number().int().positive().describe("Page number").default(0),
+    row: z.number().int().positive().describe("Data size per page").default(10)
+  })
+  .openapi("SubscanStakingEraStats");

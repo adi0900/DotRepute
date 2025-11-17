@@ -25,7 +25,8 @@ export const API_ROUTES = {
   adminAuditLogs: "/admin/audit-logs",
   adminAuditLogStats: "/admin/audit-logs/stats",
   // Subscan routes
-  subscanAccountReferenda: "/subscan/account/referenda"
+  subscanAccountReferenda: "/subscan/account/referenda",
+  subscanStakingEraStats: "/subscan/staking/era-stats"
 } as const;
 
 export type RouteName = keyof typeof API_ROUTES;
@@ -170,6 +171,11 @@ permissions.set(API_ROUTES.adminAuditLogStats, {
 
 // Subscan routes
 permissions.set(API_ROUTES.subscanAccountReferenda, {
+  permissions: { GET: "" },
+  authenticated: false
+});
+
+permissions.set(API_ROUTES.subscanStakingEraStats, {
   permissions: { GET: "" },
   authenticated: false
 });

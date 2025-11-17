@@ -60,7 +60,8 @@ This template provides a robust foundation for building scalable APIs with:
 
 #### Subscan Routes
 
-- `GET /subscan/account/referenda` -  Get governance referenda by account
+- `GET /subscan/account/referenda` - Get governance referenda by account
+- `GET /subscan/staking/era-stats` - Get staking era stats by account
 
 #### Admin Routes (SuperAdmin only)
 

@@ -105,3 +105,50 @@ export const getAccountReferenda = asyncHandler(async (req: Request, res: Respon
         res.status(status).send(resErr);
     }
 });
+
+
+/** 
+ * * GET /subscan/staking/era-stats
+ * Fetches the points of a specific account from the Subscan API.
+*/
+export const getStakingEraStats = asyncHandler(async (req: Request, res: Response) => {
+    const { address, page, row } = req.query;
+    try {
+        const response = await axios.post(
+            "https://assethub-polkadot.api.subscan.io/api/scan/staking/era_stat",
+            {
+                address,
+                page: Number(page),
+                row: Number(row),
+            },
+            {
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-api-key": config.subscanApiKey,
+                },
+            }
+        );
+
+        const data = response.data;
+        const pointsList = [];
+
+        for (const item of data.data.list) {
+            const era = item.era;
+            const rewardPoints = item.reward_point;
+
+            pointsList.push({ era, rewardPoints });
+        }
+
+        const result =  pointsList;
+
+        const resSuccess = apiResponse.success(HttpStatusCode.OK, result, "Fetched account points successfully");
+        res.status(resSuccess.code).send(resSuccess);
+
+    } catch (err: any) {
+        const status = err.response?.status || 400;
+        const message = err.response?.data?.message || "Failed to fetch validator account points from Subscan";
+
+        const resErr = apiResponse.error(HttpErrors.BadRequest(message));
+        res.status(status).send(resErr);
+    }
+});

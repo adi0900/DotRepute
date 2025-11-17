@@ -21,7 +21,7 @@ import {
 } from "@/handlers/memberships/memberships.handlers.ts";
 import { getAccount, getAccounts, createAccount, updateAccount } from "@/handlers/accounts/accounts.handlers.ts";
 import { getCurrentUser } from "@/handlers/me/me.handlers.ts";
-import { getAccountReferenda } from "@/handlers/subscan/subscan.handlers.ts";
+import { getAccountReferenda, getStakingEraStats } from "@/handlers/subscan/subscan.handlers.ts";
 
 const { API_ROUTES } = permissions;
 
@@ -63,4 +63,5 @@ export function routes(app: Application): void {
 
   // Reference routes
   app.get(API_ROUTES.subscanAccountReferenda, getAccountReferenda);
+  app.get(API_ROUTES.subscanStakingEraStats, getStakingEraStats);
 }

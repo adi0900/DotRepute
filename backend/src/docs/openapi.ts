@@ -58,6 +58,7 @@ import {
   WorkspacesListDataSchema,
   WorkspacesWithPaginationDataSchema,
   SubscanAccountSchemas,
+  SubscanStakingSchemas
 } from "./openapi-schemas.ts";
 
 const registry = new OpenAPIRegistry();
@@ -128,6 +129,7 @@ registry.register("MembershipsWithPaginationData", MembershipsWithPaginationData
 
 // Register referenced schemas collection
 registry.register("SubscanAccountSchemas", SubscanAccountSchemas);
+registry.register("SubscanStakingSchemas", SubscanStakingSchemas);
 
 // Security scheme for JWT Bearer token
 registry.registerComponent("securitySchemes", "bearerAuth", {
@@ -945,6 +947,37 @@ registry.registerPath({
     },
     400: {
       description: "Failed to fetch account referenda list from Subscan",
+      content: {
+        "application/json": {
+          schema: ErrorResponseSchema
+        }
+      }
+    }
+  }
+});
+
+registry.registerPath({
+  method: "get",
+  path: "/subscan/staking/era-stats",
+  summary: "Get staking era stats by account",
+  description: "Returns the staking era statistics for a specific account, retrieved from the Subscan API",
+  tags: ["Subscan"],
+  request: {
+    query: SubscanStakingSchemas,
+  },
+  responses: {
+    200: {
+      description: "Fetched staking era stats successfully",
+      content: {
+        "application/json": {
+          schema: SuccessResponseSchema.extend({
+            data: SubscanStakingSchemas
+          })
+        }
+      }
+    },
+    400: {
+      description: "Failed to fetch staking era stats from Subscan",
       content: {
         "application/json": {
           schema: ErrorResponseSchema
