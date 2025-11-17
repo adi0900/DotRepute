@@ -430,31 +430,6 @@ export default function DashboardPage() {
     }
   };
 
-  const getGovernanceData = async (address: string) => {
-    if (!address) return;
-
-    try {
-      const res = await fetch(
-        `/api/subscan?address=${encodeURIComponent(address)}`
-      );
-
-      if (!res.ok) {
-        throw new Error(`HTTP ${res.status}: ${res.statusText}`);
-      }
-
-      const json = await res.json();
-
-      if (!json?.data?.count && json?.data?.count !== 0) {
-        throw new Error("Invalid response format");
-      }
-
-      setGovernanceData(json.data);
-    } catch (error) {
-      console.error("Failed to fetch governance data:", error);
-      setGovernanceData(null);
-    }
-  };
-
   // Bot response logic - Understanding and responding
   const generateBotResponse = async (userMessage: string): Promise<Message> => {
     const lowerMessage = userMessage.toLowerCase();
@@ -727,9 +702,8 @@ export default function DashboardPage() {
     const hasGovernanceKeyword =
       lowerMessage.includes("governance") || lowerMessage.includes("vote");
     const extracted = extractPolkadotAddress(userMessage);
-    if (hasGovernanceKeyword || extracted) {
-      const targetAddress = extracted?.address || address;
-
+    const targetAddress = extracted?.address || address;
+    if (hasGovernanceKeyword) {
       if (!targetAddress) {
         return {
           id: Date.now().toString(),
@@ -814,177 +788,123 @@ export default function DashboardPage() {
     }
 
     // Check for staking query
-    if (lowerMessage.includes("staking") || lowerMessage.includes("stake")) {
-      if (address && polkadotApi && polkadotApi.isConnected) {
-        try {
-          const staking = await polkadotApi.getStakingInfo(address);
-          const reputationData = await polkadotApi.getReputationScore(address);
+    if (
+      lowerMessage.includes("staking") ||
+      lowerMessage.includes("stake") ||
+      lowerMessage.includes("point")
+    ) {
+      if (!targetAddress) {
+        return {
+          id: Date.now().toString(),
+          role: "bot",
+          content: extracted
+            ? "Invalid address. Please enter a valid Polkadot/Kusama address."
+            : "Please connect your wallet or enter a valid address.",
+          timestamp: new Date(),
+          type: "text",
+        };
+      }
 
-          const totalStaked = staking.totalStaked;
-          const totalStakedDOT = (parseInt(totalStaked) / 1e10).toFixed(4);
-          const stakingScore = staking.stakingScore;
+      try {
+        const res = await fetch(
+          `/api/staking?address=${encodeURIComponent(targetAddress)}`
+        );
 
-          // Calculate contribution to overall reputation
-          const stakingContribution = Math.floor(stakingScore * 0.2);
+        if (!res.ok) throw new Error("API error");
 
-          let stakingContent = `💰 Staking Activity Analysis\n\n`;
+        const result = await res.json();
+        const pointsData = result?.data || [];
 
-          // Score overview
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-          stakingContent += `📊 STAKING SCORE\n`;
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-
-          stakingContent += `Staking Score: ${stakingScore}/100\n`;
-          stakingContent += `Rating: ${stakingScore >= 80 ? "🌟 Excellent" : stakingScore >= 60 ? "👍 Good" : stakingScore >= 40 ? "📈 Moderate" : "🌱 Growing"}\n`;
-          stakingContent += `Contribution to Reputation: ${stakingContribution} points (20% weight)\n\n`;
-
-          // Staking details
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-          stakingContent += `💎 STAKING DETAILS\n`;
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-
-          stakingContent += `Total Staked: ${totalStakedDOT} DOT\n`;
-
-          if (parseInt(totalStaked) > 0) {
-            const stakingLevel = parseInt(totalStakedDOT);
-            let stakingTier = "";
-
-            if (stakingLevel >= 10000) {
-              stakingTier = "🐋 Whale Staker";
-            } else if (stakingLevel >= 5000) {
-              stakingTier = "🦈 Heavy Staker";
-            } else if (stakingLevel >= 1000) {
-              stakingTier = "🐬 Significant Staker";
-            } else if (stakingLevel >= 250) {
-              stakingTier = "🐠 Active Staker";
-            } else if (stakingLevel >= 10) {
-              stakingTier = "🦐 Pool Participant";
-            } else {
-              stakingTier = "🌱 Beginning Staker";
-            }
-
-            stakingContent += `Staker Tier: ${stakingTier}\n`;
-            stakingContent += `Network Commitment: ${stakingScore >= 70 ? "Strong 💪" : stakingScore >= 40 ? "Moderate 👍" : "Low 📈"}\n\n`;
-
-            // Nomination info
-            if (staking.nominations) {
-              const nominations = staking.nominations as any;
-              if (nominations.targets && nominations.targets.length > 0) {
-                stakingContent += `Nomination Status: ✅ Active nominator\n`;
-                stakingContent += `Validators Nominated: ${nominations.targets.length}\n`;
-                stakingContent += `Submitted in Era: ${nominations.submittedIn || "N/A"}\n\n`;
-              } else {
-                stakingContent += `Nomination Status: ⚠️ Not nominating\n\n`;
-              }
-            } else {
-              stakingContent += `Nomination Status: 📊 Likely in nomination pool\n\n`;
-            }
-
-            // Ledger info
-            if (staking.ledger) {
-              const ledger = staking.ledger as any;
-              stakingContent += `Staking Controller: ${ledger.stash ? "Set" : "Not set"}\n`;
-            }
-          } else {
-            stakingContent += `Status: ⚠️ Not currently staking\n\n`;
-          }
-
-          // Impact analysis
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-          stakingContent += `💡 IMPACT ANALYSIS\n`;
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-
-          if (parseInt(totalStaked) > 0) {
-            stakingContent += `Network Security: Contributing to Polkadot security\n`;
-            stakingContent += `Passive Income: Earning staking rewards\n`;
-            stakingContent += `Reputation Boost: ${stakingContribution} points from staking\n\n`;
-          } else {
-            stakingContent += `⚠️ You're not currently staking\n`;
-            stakingContent += `Missing out on:\n`;
-            stakingContent += `• Passive staking rewards (~15% APY)\n`;
-            stakingContent += `• Network security contribution\n`;
-            stakingContent += `• Up to 20 reputation points\n\n`;
-          }
-
-          // Recommendations
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
-          stakingContent += `🎯 RECOMMENDATIONS\n`;
-          stakingContent += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
-
-          if (parseInt(totalStaked) === 0) {
-            stakingContent += `Get Started with Staking:\n\n`;
-            stakingContent += `Option 1: Nomination Pools (Recommended)\n`;
-            stakingContent += `• Minimum: 1 DOT\n`;
-            stakingContent += `• Easiest way to start\n`;
-            stakingContent += `• Instant rewards\n`;
-            stakingContent += `• No validator management\n\n`;
-
-            stakingContent += `Option 2: Direct Nomination\n`;
-            stakingContent += `• Minimum: 250 DOT\n`;
-            stakingContent += `• Choose your own validators\n`;
-            stakingContent += `• More control\n`;
-            stakingContent += `• Requires active management\n\n`;
-
-            stakingContent += `Potential Reputation Gain: +20 points\n`;
-          } else if (stakingScore < 70) {
-            const targetStake = 1000; // Example target for good score
-            const additionalNeeded = Math.max(
-              0,
-              targetStake - parseFloat(totalStakedDOT)
-            );
-
-            stakingContent += `To boost your staking score:\n`;
-            stakingContent += `• Increase stake by ~${additionalNeeded.toFixed(0)} DOT\n`;
-            stakingContent += `• Target: 1000+ DOT for excellent score\n`;
-            stakingContent += `• Verify your validators are active\n`;
-            stakingContent += `• Consider nomination pools for easier management\n\n`;
-            stakingContent += `Potential Gain: +${Math.floor((70 - stakingScore) * 0.2)} reputation points\n`;
-          } else {
-            stakingContent += `🎉 Excellent staking activity!\n`;
-            stakingContent += `• Keep your stake active\n`;
-            stakingContent += `• Monitor validator performance\n`;
-            stakingContent += `• Consider increasing stake for even higher scores\n`;
-          }
-
-          stakingContent += `\nVisit Polkadot.js Apps or Staking Dashboard to manage your stake.`;
-
+        if (!Array.isArray(pointsData) || pointsData.length === 0) {
           return {
             id: Date.now().toString(),
             role: "bot",
-            content: stakingContent,
-            timestamp: new Date(),
-            type: "data",
-            data: {
-              stakingScore,
-              totalStaked: totalStakedDOT,
-              stakingContribution,
-              hasNominations: staking.nominations ? true : false,
-              ledgerInfo: staking.ledger,
-            },
-          };
-        } catch (error) {
-          console.error("Failed to fetch staking data:", error);
-          return {
-            id: Date.now().toString(),
-            role: "bot",
-            content:
-              "Unable to fetch your staking data from the blockchain. Please try again later.",
+            content: `No staking points found for this address.`,
             timestamp: new Date(),
             type: "text",
           };
         }
-      }
 
-      return {
-        id: Date.now().toString(),
-        role: "bot",
-        content:
-          address && !polkadotApi?.isConnected
-            ? "Connecting to Polkadot network... Please try again in a moment."
-            : "Please connect your wallet to view your staking activity.",
-        timestamp: new Date(),
-        type: "text",
-      };
+        const totalPoints = pointsData.reduce(
+          (sum: number, e: any) => sum + (e.rewardPoints || 0),
+          0
+        );
+        const avgPoints = Math.round(totalPoints / pointsData.length);
+        const erasCount = pointsData.length;
+
+        const stakingScore = Math.min(100, Math.round(avgPoints / 1000)); // ~100k points → 100
+
+        let content = `Staking Points History\n\n`;
+
+        content += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        content += `POINT SUMMARY\n`;
+        content += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+        content += `Staking Score: ${stakingScore}/100\n`;
+        content += `Rating: ${
+          stakingScore >= 80
+            ? "Excellent"
+            : stakingScore >= 60
+              ? "Good"
+              : stakingScore >= 40
+                ? "Moderate"
+                : "Growing"
+        }\n`;
+        content += `Eras with Points: ${erasCount}\n`;
+        content += `Average Points/Era: ${avgPoints.toLocaleString()}\n`;
+        content += `Total Points: ${totalPoints.toLocaleString()}\n\n`;
+
+        content += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n`;
+        content += `RECENT ERAS\n`;
+        content += `━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n`;
+
+        pointsData.slice(0, 8).forEach((era: any) => {
+          const points = era.rewardPoints || 0;
+          const status = points > 0 ? "Active" : "No points";
+          content += `• Era ${era.era}: ${points.toLocaleString()} pts ${status}\n`;
+        });
+
+        if (pointsData.length > 8) {
+          content += `... and ${pointsData.length - 8} more eras\n`;
+        }
+
+        content += `\n`;
+
+        if (stakingScore >= 80) {
+          content += `Outstanding validator/nominator performance!`;
+        } else if (stakingScore >= 60) {
+          content += `Great consistency! Keep up the good work.`;
+        } else if (stakingScore >= 40) {
+          content += `Good start. Aim for more consistent points.`;
+        } else {
+          content += `Start staking or nominate active validators to earn points!`;
+        }
+
+        return {
+          id: Date.now().toString(),
+          role: "bot",
+          content,
+          timestamp: new Date(),
+          type: "data",
+          data: {
+            stakingScore,
+            avgPoints,
+            totalPoints,
+            erasCount,
+            recentEras: pointsData.slice(0, 8),
+            address: targetAddress,
+          },
+        };
+      } catch (error) {
+        console.error("Staking points error:", error);
+        return {
+          id: Date.now().toString(),
+          role: "bot",
+          content: "Unable to load staking points. Please try again later.",
+          timestamp: new Date(),
+          type: "text",
+        };
+      }
     }
 
     // Check for activity query
@@ -1945,7 +1865,9 @@ export default function DashboardPage() {
                   <QuickActionButton
                     theme={theme}
                     label="Staking"
-                    onClick={() => setInputValue("What is my staking score?")}
+                    onClick={() =>
+                      setInputValue("Show staking points of Your_Address")
+                    }
                   />
                   <QuickActionButton
                     theme={theme}
