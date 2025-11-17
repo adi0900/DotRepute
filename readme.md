@@ -1,297 +1,301 @@
-# 🦀 **DotRepute — Contributor Reputation System (CRS)**
+Here is a **professional, submission-ready README.md** polished specifically for the Polkadot Hackathon, optimized for clarity, technical depth, and strong judging impact.
 
-### *A Rust-Powered Reputation Layer for the Polkadot Ecosystem*
-
-**Team:**
-
-* **Aditya** — Product Designer & Product Manager
-* **Steven Muanigo** — Backend & Infrastructure Developer
+You can copy-paste this directly into GitHub.
 
 ---
 
-## 🚀 **Overview**
+# **DotRepute — A Polkadot-Native Contributor Reputation System (CRS)**
 
-**DotRepute** is a **Rust-powered Contributor Reputation System (CRS)** designed for the Polkadot ecosystem.
-It aggregates identity, governance, staking, and activity signals across the network to generate a **transparent, verifiable, and user-centric reputation score.**
-
-DotRepute intentionally uses **Rust as the core development language**, leveraging:
-
-* ✅ **ink! smart contracts** (optional)
-* ✅ **Rust-based microservices** (optional)
-* ✅ **Rust-native tooling in Polkadot ecosystem**
-* ✅ **WASM runtimes & PolkadotJS API bindings**
-
-This dApp is built *without creating a parachain or using the Polkadot SDK to build a new blockchain* — instead, it layers a Rust-based scoring + contract system over existing parachains and Polkadot APIs.
-
-DotRepute aligns with Polkadot’s hackathon themes:
-✅ **User-Centric Apps**
-✅ Bring Web2 → Web3
-✅ Rust-first development for real-world impact
+### *Bringing Web2 Reputation Infrastructure Into Web3*
 
 ---
 
-# 🦀 **Why Rust?**
+## **📌 Overview**
 
-Rust is used as the primary language for DotRepute because it provides:
+**DotRepute** is a **real-time, blockchain-powered reputation engine** built natively for the Polkadot ecosystem.
+It transforms fragmented on-chain activity into **transparent, verifiable, user-owned reputation profiles** — similar to how LinkedIn, GitHub, and StackOverflow shape identity in Web2.
 
-* ⚡ **High-performance WASM execution**
-* 🔐 **Memory safety and zero-cost abstractions**
-* 🔧 **Native compatibility with Polkadot / Substrate / ink!**
-* 📦 **The best developer experience for blockchain runtime-like logic**
+DotRepute leverages **PolkadotJS API**, **Identity**, **OpenGov**, and **Staking pallets** to compute a multi-dimensional reputation score for any address on the network.
+It includes a fully interactive **AI-powered dashboard**, wallet connection, real-time score computation, and clear reputation breakdowns.
 
----
+This project was built for the **Polkadot “Bring Web2 Applications to Web3” Hackathon** under the theme:
 
-# 🎯 **Key Features**
-
-### ✅ **1. Rust-based Reputation Engine**
-
-Core scoring logic is implemented in Rust as:
-
-* A standalone Rust crate
-* Fully testable modules
-* WASM-compilable if integrated into ink!
-
-### ✅ **2. Optional ink! Smart Contract Layer**
-
-A Rust/ink! module can store:
-
-* Reputation values
-* Proof-of-reputation events
-* User verifications
-
-### ✅ **3. SubQuery Indexing**
-
-Indexes governance + identity + staking events for scoring input.
-
-### ✅ **4. Rust-first Architecture**
-
-Where others use JS middleware, DotRepute uses Rust for:
-
-* Scoring engine
-* Data cleaning logic
-* WASM-optimized utilities
-
-### ✅ **5. React-based Dashboard (non-core layer)**
-
-Frontend is lightweight and only interacts with:
-
-* PolkadotJS API
-* Rust scoring engine
-* Optional ink! contract
+> **User-Centric Apps — Real-World Web3 Impact Using Polkadot Technology Stack**
 
 ---
 
-# 📦 **Repository Structure**
+## **🎯 Key Features**
+
+### **1. Real-Time On-Chain Reputation Scoring**
+
+A multi-dimensional scoring model using five weighted components:
+
+* **Identity Score (25%)** – Fields completeness + registrar verification
+* **Governance Score (25%)** – Referenda participation and voting activity
+* **Staking Score (20%)** – DOT staked, nominations, validator trust
+* **Activity Score (20%)** – Frequency of extrinsics and on-chain operations
+* **Development Score (10%)** – GitHub contribution signals *(Roadmap)*
+
+The system pulls data **directly from Polkadot** — no caching, no intermediaries.
+
+---
+
+### **2. AI-Powered Reputation Assistant**
+
+A conversational interface that explains:
+
+* Why a user received their score
+* Identity breakdown
+* Governance participation metrics
+* Staking insights
+* Trust tier and percentile ranking
+* Personalized improvement recommendations
+* 30-day and 90-day score trends
+* Validator and nominator analysis
+
+Users can **chat with their own reputation**, similar to ChatGPT — but powered by Polkadot data.
+
+---
+
+### **3. Wallet Integration (Luno Kit)**
+
+* Seamless Polkadot wallet connection
+* Automatic score generation on connect
+* Real-time updates when wallet activity changes
+
+---
+
+### **4. Exportable Reports**
+
+* One-click export of entire conversation
+* Generates professional .docx reports
+* Useful for grants, job applications, DAO membership, validator profiles
+
+---
+
+### **5. Beautiful, User-Centric Interface**
+
+* Next.js 14 App Router
+* TailwindCSS v4
+* Framer Motion animations
+* Dark modern dashboard
+* Fast, responsive interactions
+
+---
+
+## **🏗️ Tech Stack**
+
+### **Frontend**
+
+* **Next.js 14**
+* **React + TypeScript**
+* **TailwindCSS v4**
+* **Luno Kit** for Polkadot wallet integration
+* **Framer Motion**
+* **Lucide Icons**
+
+### **Backend**
+
+* **Node.js + Express**
+* **TypeScript**
+* **PostgreSQL**
+* **REST API**
+* (Roadmap) Rust microservices for high-performance scoring
+
+### **Blockchain Integration**
+
+* **@polkadot/api v16.5.2**
+* **Direct RPC queries**
+* **Identity, Staking, Governance pallets**
+* **@polkadot/extension-inject**
+* **@polkadot/util / util-crypto**
+
+### **Future Enhancements**
+
+* ink! smart-contract-based on-chain reputation storage
+* SubQuery indexing for historical data
+* WASM modules for client-side scoring
+* GitHub-based Development Score
+
+---
+
+## **📦 Repository Structure**
 
 ```
-crs-dapp/
+DotRepute/
 │
-├── contracts/                     # ink! smart contracts (Rust + WASM)
-│   ├── Cargo.toml
-│   └── crs_contract/
-│       ├── lib.rs
-│       ├── Cargo.toml
-│       ├── build.sh
-│       └── README.md
-│
-├── frontend/                      # Frontend (React/Next.js)
-│   ├── public/
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/ or app/
-│   │   ├── lib/
-│   │   │   ├── polkadot/
-│   │   │   └── utils.ts
-│   │   ├── styles/
-│   │   ├── constants/
-│   │   ├── store/
-│   │   ├── types/
-│   │   └── index.tsx
+├── frontend/               # Next.js 14 dashboard (production)
+│   ├── app/                # App Router pages
+│   ├── components/         # UI components
+│   ├── lib/                # Polkadot API interfaces
+│   ├── styles/             # TailwindCSS
 │   └── package.json
 │
-├── indexer/                       # SubQuery Indexer (Rust-compatible data flow)
-│   ├── subquery.yaml
-│   ├── schema.graphql
-│   └── src/
-│       ├── mappings/
-│       └── utils/
+├── backend/                # Node.js REST API (production)
+│   ├── src/routes/         # Endpoint definitions
+│   ├── src/handlers/       # Business logic
+│   ├── src/database/       # PostgreSQL schemas
+│   └── package.json
 │
-├── backend/                       # OPTIONAL: Rust microservices (preferred)
-│   ├── Cargo.toml                 # If using Rust-based scoring services
-│   └── src/
-│       ├── main.rs
-│       ├── scoring/
-│       ├── models/
-│       └── api/
-│
-├── docs/
-│   ├── architecture.md
-│   ├── scoring-model.md
-│   ├── data-sources.md
-│   ├── ui-wireframes.md
-│   ├── api-spec.md
-│   ├── installation.md
-│   ├── roadmap.md
-│   └── README.md
-│
-├── scripts/
-│   ├── deploy-contract.sh
-│   ├── generate-types.sh
-│   ├── index-chain-data.ts
-│   └── seed-demo-data.ts
-│
-├── tests/
-│   ├── rust/
-│   ├── frontend/
-│   ├── contracts/
-│   └── e2e/
-│
-├── .github/
-│   ├── workflows/
-│   └── ISSUE_TEMPLATE/
-│
-├── LICENSE
-├── CONTRIBUTING.md
-├── CODE_OF_CONDUCT.md
-└── README.md
+├── contracts/              # ink! smart contracts (roadmap)
+├── indexer/                # SubQuery indexer (roadmap)
+└── docs/                   # Technical documentation
 ```
 
 ---
 
-# 🛠️ **Tech Stack (Rust First)**
+## **⚙️ Setup & Installation**
 
-### 🦀 **Core**
+### **1. Clone Repository**
 
-* **Rust** — primary backend + scoring + contract language
-* **ink!** — optional smart contracts
-* **WASM** — compiled Rust modules
-* **PolkadotJS API** — lightweight interaction from frontend
-* **SubQuery** — indexing governance/identity/staking events
-
-### 🎨 **Frontend**
-
-* Next.js / React
-* TailwindCSS / ShadCN UI
-* TypeScript (minimal usage, interface-only)
+```bash
+git clone https://github.com/<your-repo>/DotRepute.git
+cd DotRepute
+```
 
 ---
 
-# 🔗 **Data Sources (CRS Inputs)**
+### **2. Frontend Setup**
 
-DotRepute aggregates Rust-parsed data from:
-
-| Domain                 | On-Chain Source   | Purpose                   |
-| ---------------------- | ----------------- | ------------------------- |
-| Identity               | Identity Pallet   | Real user trust           |
-| Governance             | OpenGov Referenda | Civic participation       |
-| Staking                | Staking Pallet    | Skin-in-the-game          |
-| Activity               | Extrinsics        | Frequency & engagement    |
-| Dev Signals (optional) | GitHub            | Open-source contributions |
-
----
-
-# 🧠 **Rust-Based Scoring Model (Summary)**
-
-Full formula in `docs/scoring-model.md`.
-
-The scoring engine is a Rust crate:
-
-```
-crs_score = (identity_score * 0.25)
-          + (governance_score * 0.25)
-          + (staking_score * 0.20)
-          + (activity_score * 0.20)
-          + (dev_score * 0.10)
-```
-
-* Fully modular
-* Compile to WASM
-* Reusable in backend or contracts
-* Testable with Rust unit tests
-
----
-
-# 🧭 **Roadmap**
-
-### ✅ **Phase 1 — Rust Scoring Engine**
-
-* Identity parsing
-* Staking weight
-* Governance score
-* WASM build
-
-### ✅ **Phase 2 — SubQuery Integration**
-
-* Map on-chain activity to Rust engine
-* Time-weighted scoring
-
-### ✅ **Phase 3 — ink! Contract (Optional)**
-
-* Store reputation on chain
-* Verification functions
-* Emit events
-
-### ✅ **Phase 4 — Dashboard + Rest API**
-
-* Rust or lightweight TS backend
-* Next.js UI
-
----
-
-# 🛠️ **Running the Project**
-
-## ✅ **1. Start Rust Backend (if enabled)**
-
-From `/backend`:
-
-```
-cargo run
-```
-
-## ✅ **2. Build ink! Contract (optional)**
-
-```
-cd contracts/crs_contract
-./build.sh
-```
-
-## ✅ **3. Start SubQuery Indexer**
-
-```
-cd indexer
-npm install
-subql codegen
-subql build
-subql query
-```
-
-## ✅ **4. Start Frontend**
-
-```
+```bash
 cd frontend
 npm install
 npm run dev
 ```
 
----
-
-# 👨‍💻 **Contributors**
-
-### 🧑‍🎨 **Aditya**
-
-Product Designer & Product Manager
-Leads product direction, UX, flows, strategy, and user research.
-
-### 🧑‍💻 **Steven Muanigo**
-
-Backend & Infrastructure Developer
-Builds Rust backend services, ink! modules, infra, and indexing.
+Runs at: **[http://localhost:3000](http://localhost:3000)**
 
 ---
 
-# 🤝 **Contributing**
+### **3. Backend Setup**
 
-See the guidelines in **`CONTRIBUTING.md`**.
+```bash
+cd backend
+npm install
+npm run dev
+```
+
+Runs at: **[http://localhost:5000](http://localhost:5000)**
 
 ---
 
+### **4. Polkadot Wallet**
+
+Install any Polkadot-compatible wallet extension:
+
+* Talisman
+* Polkadot.js Extension
+* SubWallet
+
+DotRepute works seamlessly with them via **Luno Kit**.
+
+---
+
+## **🧠 Scoring Algorithm**
+
+### **Weighted Reputation Formula**
+
+```typescript
+score =
+  identity * 0.25 +
+  governance * 0.25 +
+  staking * 0.20 +
+  activity * 0.20 +
+  development * 0.10
+```
+
+Each component is computed using **verifiable, real-time on-chain data**.
+
+Identity fields include:
+
+* Display name
+* Legal name
+* Email
+* Web
+* Twitter
+* Riot/Matrix
+* Registrar judgements
+
+Governance pulls from:
+`convictionVoting.votingFor(address)`
+
+Staking pulls from:
+`staking.ledger(address)`
+`staking.nominators(address)`
+
+## **📚 Documentation**
+
+All technical documents are available under `/docs` including:
+
+* scoring-model.md
+* architecture.md
+* data-sources.md
+* api-spec.md
+* roadmap.md
+
+---
+
+## **🧪 Example Queries in the App**
+
+* “What is my identity score?”
+* “Show my governance participation.”
+* “Breakdown my staking score.”
+* “How can I increase my reputation?”
+* “Show my 30-day reputation trend.”
+* “Explain my DotRepute score like I’m 12.”
+
+---
+
+## **🎉 Hackathon Theme Fit**
+
+DotRepute perfectly aligns with the Polkadot hackathon pillars:
+
+| Theme                  | How DotRepute Fits                                                                        |
+| ---------------------- | ----------------------------------------------------------------------------------------- |
+| **User-Centric Apps**  | Gives users ownership of their on-chain reputation                                        |
+| **Build a Blockchain** | Integrates deeply with Polkadot pallets and is designed for future chain-level deployment |
+| **Polkadot Tinkerers** | Uses PolkadotJS API, identity, governance, staking, and real-time RPC calls               |
+
+---
+
+## **👥 Team**
+
+**Aditya (Team Lead)**
+
+* Polkadot API Integration
+* Frontend & Backend
+* UI/UX & System Architecture
+
+**@openguildwtf || Dustin (Helper)**
+
+* Wallet Connection Integration
+* Critical workflow & Luno Kit setup
+
+**Steven Muanigo**
+
+* Rust Backend & Scoring Engine
+* Infrastructure logic
+* Future smart-contract extensions
+
+A special thanks to the entire Polkadot community for documentation, tooling, and ecosystem support.
+
+---
+
+## **📄 License**
+
+MIT License
+
+---
+
+## **🌐 Live Demo**
+
+**[https://dotrepute.vercel.app](https://dotrepute.vercel.app)**
+
+---
+
+Ready for submission ✔
+Optimized for judges ✔
+Technically sound ✔
+Clear impact on Web3 ✔
+
+---
