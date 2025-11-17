@@ -337,7 +337,8 @@ export default function DashboardPage() {
                 spacing: { after: 200 },
               }),
               // Add data breakdown if present
-              ...(msg.data ? [
+              ...(msg.data?.breakdown?.identity && msg.data?.breakdown?.governance &&
+                  msg.data?.breakdown?.staking && msg.data?.breakdown?.activity ? [
                 new Paragraph({
                   children: [
                     new TextRun({
@@ -351,7 +352,7 @@ export default function DashboardPage() {
                 new Paragraph({
                   children: [
                     new TextRun({
-                      text: `Total Score: ${msg.data.totalScore}/${msg.data.maxScore}`,
+                      text: `Total Score: ${msg.data.totalScore || 0}/${msg.data.maxScore || 100}`,
                       size: 20,
                     }),
                   ],
@@ -385,6 +386,17 @@ export default function DashboardPage() {
                     new TextRun({
                       text: `Activity: ${msg.data.breakdown.activity.score}/100`,
                       size: 20,
+                    }),
+                  ],
+                  spacing: { after: 200 },
+                }),
+              ] : msg.data?.totalScore !== undefined ? [
+                new Paragraph({
+                  children: [
+                    new TextRun({
+                      text: `📊 Score: ${msg.data.totalScore}/${msg.data.maxScore || 100}`,
+                      bold: true,
+                      size: 22,
                     }),
                   ],
                   spacing: { after: 200 },
