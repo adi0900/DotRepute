@@ -22,6 +22,7 @@ import {
 import { getAccount, getAccounts, createAccount, updateAccount } from "@/handlers/accounts/accounts.handlers.ts";
 import { getCurrentUser } from "@/handlers/me/me.handlers.ts";
 import { getAccountReferenda } from "@/handlers/subscan/subscan.handlers.ts";
+import { getReputationScore } from "@/handlers/reputation/reputation.handlers.ts";
 
 const { API_ROUTES } = permissions;
 
@@ -63,4 +64,7 @@ export function routes(app: Application): void {
 
   // Reference routes
   app.get(API_ROUTES.subscanAccountReferenda, getAccountReferenda);
+
+  // Reputation routes - public access
+  app.get('/api/reputation/score/:address', getReputationScore);
 }
