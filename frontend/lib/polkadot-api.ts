@@ -72,12 +72,15 @@ export class PolkadotInfrastructure {
   async getBalance(address: string) {
     if (!this.api) throw new Error('API not connected');
 
-    const { data: { free, reserved, frozen } } = await this.api.query.system.account(address);
+    const accountInfo = await this.api.query.system.account(address);
+    const accountData = accountInfo.toJSON() as any;
+    const { free, reserved, frozen } = accountData.data;
+
     return {
       free: free.toString(),
       reserved: reserved.toString(),
       frozen: frozen.toString(),
-      total: free.add(reserved).toString(),
+      total: (BigInt(free) + BigInt(reserved)).toString(),
     };
   }
 
