@@ -224,7 +224,7 @@ export default function LandingPage() {
                 {/* CTA Buttons - Venture boxed style with premium hover effects */}
                 <div className="flex flex-col sm:flex-row gap-4 pt-2">
                   <a
-                    href="#"
+                    href="/dashboard"
                     className={`group relative border px-8 py-4 text-center transition-all duration-300 overflow-hidden ${
                       theme === "light"
                         ? "border-black/20 bg-white hover:border-black/40 hover:shadow-lg"
@@ -722,7 +722,7 @@ export default function LandingPage() {
 
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <a
-                    href="#"
+                    href="/dashboard"
                     className={`border px-8 py-4 transition-colors text-center ${
                       theme === "light"
                         ? "border-black/10 hover:bg-black/5"
