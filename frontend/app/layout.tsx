@@ -4,6 +4,7 @@ import "./globals.css";
 import "@luno-kit/ui/styles.css";
 import { Providers } from "@/providers/luno-provider";
 import LayoutWrapper from "@/components/layout-wrapper";
+import { ThemeProvider } from "@/context/ThemeContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -42,7 +43,9 @@ export default function RootLayout({
     <html lang="en" className="dark">
       <body className={inter.className}>
         <Providers>
-          <LayoutWrapper>{children}</LayoutWrapper>
+          <ThemeProvider>
+            <LayoutWrapper>{children}</LayoutWrapper>
+          </ThemeProvider>
         </Providers>
       </body>
     </html>
