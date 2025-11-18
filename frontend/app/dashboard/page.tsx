@@ -7,7 +7,6 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { VentureNavbar } from "@/components/venture-navbar";
 import { useAccount } from "@luno-kit/react";
 import { PolkadotInfrastructure, NETWORKS } from "@/lib/polkadot-api";
 import Link from "next/link";
@@ -15,61 +14,31 @@ import {
   Send,
   Bot,
   User,
-  Sparkles,
-  ChevronRight,
-  Shield,
-  Vote,
-  Coins,
-  Activity,
-  TrendingUp,
   Bookmark,
   MessageSquare,
   Plus,
   Star,
-  Clock,
   LogIn,
   UserPlus,
-  Trash2,
-  MoreVertical,
   Download,
-  Trophy,
-  TrendingDown,
-  Lightbulb,
 } from "lucide-react";
 import { Document, Paragraph, TextRun, Packer } from "docx";
 import { saveAs } from "file-saver";
 import { extractPolkadotAddress } from "@/lib/extractPolkadotAddress";
+import { useTheme } from "@/context/ThemeContext";
+import { ChatSession, Message } from "@/types/default-types";
+import { QuickActionButton } from "@/components/dashboard/QuickActionButton";
+import { MessageBubble } from "@/components/dashboard/MessageBubble";
 
 // Message type definition
-interface Message {
-  id: string;
-  role: "user" | "bot";
-  content: string;
-  timestamp: Date;
-  type?: "text" | "data" | "question";
-  data?: any;
-  isBookmarked?: boolean;
-}
-
-// Chat Session type
-interface ChatSession {
-  id: string;
-  title: string;
-  lastMessage: string;
-  timestamp: Date;
-  messageCount: number;
-}
 
 export default function DashboardPage() {
-  const [theme, setTheme] = useState<"light" | "dark">("dark");
-  const [mounted, setMounted] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputValue, setInputValue] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(true); // Default to logged in on dashboard
   const [sidebarTab, setSidebarTab] = useState<"chats" | "bookmarks">("chats");
   const [chatSessions, setChatSessions] = useState<ChatSession[]>([]);
-  const [governanceData, setGovernanceData] = useState<any>(null);
   const [currentSessionId, setCurrentSessionId] = useState<string>("1");
   const [sessionMessages, setSessionMessages] = useState<
     Record<string, Message[]>
@@ -79,6 +48,7 @@ export default function DashboardPage() {
   const [polkadotApi, setPolkadotApi] = useState<PolkadotInfrastructure | null>(
     null
   );
+  const { theme, mounted } = useTheme();
 
   // Initialize Polkadot API connection
   useEffect(() => {
@@ -103,12 +73,6 @@ export default function DashboardPage() {
 
   // Initialize theme from localStorage on mount
   useEffect(() => {
-    setMounted(true);
-    const savedTheme = localStorage.getItem("theme") as "light" | "dark" | null;
-    const initialTheme = savedTheme || "dark";
-    setTheme(initialTheme);
-    document.documentElement.classList.toggle("dark", initialTheme === "dark");
-
     // Load saved chat sessions from localStorage
     const savedSessions = localStorage.getItem("chatSessions");
     const savedSessionMessages = localStorage.getItem("sessionMessages");
@@ -174,14 +138,6 @@ export default function DashboardPage() {
       localStorage.setItem("currentSessionId", currentSessionId);
     }
   }, [chatSessions, sessionMessages, currentSessionId, mounted]);
-
-  // Toggle theme and persist to localStorage
-  const toggleTheme = () => {
-    const newTheme = theme === "dark" ? "light" : "dark";
-    setTheme(newTheme);
-    localStorage.setItem("theme", newTheme);
-    document.documentElement.classList.toggle("dark", newTheme === "dark");
-  };
 
   // Handle logout
   const handleLogout = () => {
@@ -1451,20 +1407,7 @@ export default function DashboardPage() {
   if (!mounted) return null;
 
   return (
-    <div
-      className={`relative min-h-screen transition-colors duration-300 ${
-        theme === "light" ? "bg-white text-black" : "bg-black text-white"
-      }`}
-    >
-      {/* Venture Navbar */}
-      <VentureNavbar
-        theme={theme}
-        onToggleTheme={toggleTheme}
-        currentPath="/dashboard"
-        isLoggedIn={isLoggedIn}
-        onLogout={handleLogout}
-      />
-
+    <>
       {/* Main Dashboard Layout */}
       <div className="pt-24 h-screen flex flex-col">
         <div className="flex-1 flex overflow-hidden">
@@ -1904,280 +1847,6 @@ export default function DashboardPage() {
           </main>
         </div>
       </div>
-    </div>
-  );
-}
-
-// Message Bubble Component
-function MessageBubble({
-  message,
-  theme,
-  onToggleBookmark,
-}: {
-  message: Message;
-  theme: "light" | "dark";
-  onToggleBookmark: () => void;
-}) {
-  const isUser = message.role === "user";
-
-  return (
-    <div
-      className={`flex items-start gap-3 ${isUser ? "flex-row-reverse" : ""}`}
-    >
-      {/* Avatar */}
-      <div
-        className={`border p-2 flex-shrink-0 ${
-          theme === "light"
-            ? "border-black/20 bg-white"
-            : "border-white/10 bg-black/40"
-        }`}
-      >
-        {isUser ? <User className="w-5 h-5" /> : <Bot className="w-5 h-5" />}
-      </div>
-
-      {/* Message Content */}
-      <div
-        className={`flex-1 min-w-0 ${isUser ? "flex flex-col items-end" : ""}`}
-      >
-        <div
-          className={`border px-4 py-3 w-full ${
-            isUser
-              ? theme === "light"
-                ? "border-black/20 bg-orange-50"
-                : "border-orange-900/30 bg-orange-950/20"
-              : theme === "light"
-                ? "border-black/10 bg-white"
-                : "border-white/5 bg-black/20"
-          }`}
-        >
-          {message.type === "data" && message.data ? (
-            <ReputationDataDisplay
-              data={message.data}
-              theme={theme}
-              content={message.content}
-            />
-          ) : (
-            <p className="text-sm leading-relaxed whitespace-pre-line break-words">
-              {message.content}
-            </p>
-          )}
-
-          {/* Message Actions */}
-          {!isUser && (
-            <div className="flex items-center gap-2 mt-3 pt-3 border-t border-current border-opacity-10">
-              <button
-                onClick={onToggleBookmark}
-                className={`transition-colors ${
-                  message.isBookmarked
-                    ? "text-yellow-500"
-                    : theme === "light"
-                      ? "text-gray-400 hover:text-gray-700"
-                      : "text-gray-600 hover:text-gray-400"
-                }`}
-              >
-                <Bookmark
-                  className={`w-4 h-4 ${message.isBookmarked ? "fill-current" : ""}`}
-                />
-              </button>
-            </div>
-          )}
-        </div>
-
-        {/* Timestamp */}
-        <span
-          className={`text-xs font-mono mt-1 ${
-            theme === "light" ? "text-gray-500" : "text-gray-600"
-          }`}
-        >
-          {message.timestamp.toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// Reputation Data Display Component
-function ReputationDataDisplay({
-  data,
-  theme,
-  content,
-}: {
-  data: any;
-  theme: "light" | "dark";
-  content: string;
-}) {
-  // Check if this is a full reputation score response with all required fields
-  const hasFullBreakdown =
-    data?.breakdown?.identity &&
-    data?.breakdown?.governance &&
-    data?.breakdown?.staking &&
-    data?.breakdown?.activity;
-
-  return (
-    <div className="space-y-4">
-      <p className="text-sm whitespace-pre-line">{content}</p>
-
-      {/* Only show score overview if we have totalScore and maxScore */}
-      {data?.totalScore !== undefined && data?.maxScore !== undefined && (
-        <div className="space-y-2">
-          <div className="flex items-baseline gap-3">
-            <span className="text-4xl font-bold">{data.totalScore}</span>
-            <span
-              className={theme === "light" ? "text-gray-600" : "text-gray-500"}
-            >
-              / {data.maxScore}
-            </span>
-          </div>
-
-          <div
-            className={`border h-2 overflow-hidden ${
-              theme === "light"
-                ? "border-black/20 bg-gray-100"
-                : "border-white/10 bg-white/5"
-            }`}
-          >
-            <div
-              className={`h-full ${
-                theme === "light"
-                  ? "bg-gradient-to-r from-orange-500 to-yellow-500"
-                  : "bg-gradient-to-r from-orange-400 to-yellow-400"
-              }`}
-              style={{ width: `${(data.totalScore / data.maxScore) * 100}%` }}
-            />
-          </div>
-
-          {/* Only show rank/percentile if available */}
-          {(data?.rank || data?.percentile) && (
-            <div className="flex gap-4 text-sm">
-              {data.rank && (
-                <span
-                  className={
-                    theme === "light" ? "text-gray-600" : "text-gray-500"
-                  }
-                >
-                  Rank: <span className="font-bold">#{data.rank}</span>
-                </span>
-              )}
-              {data.percentile && (
-                <span
-                  className={
-                    theme === "light" ? "text-gray-600" : "text-gray-500"
-                  }
-                >
-                  {data.percentile}
-                </span>
-              )}
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* Breakdown - only show if all components exist */}
-      {hasFullBreakdown && (
-        <div className="grid grid-cols-2 gap-3 pt-2">
-          <ScoreItem
-            icon={<Shield className="w-4 h-4" />}
-            label="Identity"
-            score={data.breakdown.identity.score}
-            max={data.breakdown.identity.max}
-            theme={theme}
-          />
-          <ScoreItem
-            icon={<Vote className="w-4 h-4" />}
-            label="Governance"
-            score={data.breakdown.governance.score}
-            max={data.breakdown.governance.max}
-            theme={theme}
-          />
-          <ScoreItem
-            icon={<Coins className="w-4 h-4" />}
-            label="Staking"
-            score={data.breakdown.staking.score}
-            max={data.breakdown.staking.max}
-            theme={theme}
-          />
-          <ScoreItem
-            icon={<Activity className="w-4 h-4" />}
-            label="Activity"
-            score={data.breakdown.activity.score}
-            max={data.breakdown.activity.max}
-            theme={theme}
-          />
-        </div>
-      )}
-    </div>
-  );
-}
-
-// Score Item Component
-function ScoreItem({
-  icon,
-  label,
-  score,
-  max,
-  theme,
-}: {
-  icon: React.ReactNode;
-  label: string;
-  score: number;
-  max: number;
-  theme: "light" | "dark";
-}) {
-  return (
-    <div
-      className={`border p-3 ${
-        theme === "light"
-          ? "border-black/10 bg-gray-50"
-          : "border-white/5 bg-black/20"
-      }`}
-    >
-      <div className="flex items-center gap-2 mb-2">
-        <div className={theme === "light" ? "text-gray-600" : "text-gray-500"}>
-          {icon}
-        </div>
-        <span
-          className={`text-xs uppercase tracking-wider font-mono ${
-            theme === "light" ? "text-gray-600" : "text-gray-500"
-          }`}
-        >
-          {label}
-        </span>
-      </div>
-      <div className="flex items-baseline gap-1">
-        <span className="text-xl font-bold">{score}</span>
-        <span
-          className={`text-sm ${theme === "light" ? "text-gray-600" : "text-gray-500"}`}
-        >
-          /{max}
-        </span>
-      </div>
-    </div>
-  );
-}
-
-// Quick Action Button Component
-function QuickActionButton({
-  theme,
-  label,
-  onClick,
-}: {
-  theme: "light" | "dark";
-  label: string;
-  onClick: () => void;
-}) {
-  return (
-    <button
-      onClick={onClick}
-      className={`border px-3 py-1.5 text-xs uppercase tracking-wider font-medium transition-colors ${
-        theme === "light"
-          ? "border-black/20 hover:bg-black/5 text-gray-700 hover:text-black"
-          : "border-white/10 hover:bg-white/5 text-gray-400 hover:text-white"
-      }`}
-    >
-      {label}
-    </button>
+    </>
   );
 }

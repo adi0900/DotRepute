@@ -1,4 +1,20 @@
-import { Boxes, Code2, Database, Shield, Zap, Lock } from "lucide-react";
+import {
+  Boxes,
+  Code2,
+  Database,
+  Shield,
+  Zap,
+  Lock,
+  GitBranch,
+  Terminal,
+  Package,
+  BookOpen,
+  Wrench,
+  Code,
+  FileText,
+  Layers,
+  Award,
+} from "lucide-react";
 
 export const FEATURES = [
   {
@@ -123,5 +139,66 @@ export const WORKFLOW = [
     title: "Delivery",
     description:
       "Return JSON/GraphQL response or render UI components for the user",
+  },
+];
+
+export const SECTIONS_RESOURCES = [
+  {
+    id: "tech-stack",
+    label: "Tech Stack",
+    icon: <Code className="w-4 h-4" />,
+  },
+  {
+    id: "repository",
+    label: "Repository",
+    icon: <GitBranch className="w-4 h-4" />,
+  },
+  {
+    id: "setup",
+    label: "Development Setup",
+    icon: <Terminal className="w-4 h-4" />,
+  },
+  {
+    id: "features",
+    label: "Key Features",
+    icon: <Package className="w-4 h-4" />,
+  },
+  {
+    id: "external",
+    label: "External Resources",
+    icon: <BookOpen className="w-4 h-4" />,
+  },
+  {
+    id: "tools",
+    label: "Development Tools",
+    icon: <Wrench className="w-4 h-4" />,
+  },
+];
+
+export const SECTIONS_DOCS = [
+  {
+    id: "overview",
+    label: "Overview",
+    icon: <FileText className="w-4 h-4" />,
+  },
+  {
+    id: "architecture",
+    label: "Architecture",
+    icon: <Layers className="w-4 h-4" />,
+  },
+  {
+    id: "scoring",
+    label: "Scoring Model",
+    icon: <Award className="w-4 h-4" />,
+  },
+  {
+    id: "data-sources",
+    label: "Data Sources",
+    icon: <Database className="w-4 h-4" />,
+  },
+  {
+    id: "development",
+    label: "Development",
+    icon: <Code className="w-4 h-4" />,
   },
 ];
